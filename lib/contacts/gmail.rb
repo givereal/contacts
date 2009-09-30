@@ -1,13 +1,12 @@
-begin
-  # If the json gem is available, use it
-  require "json/add/rails"
-rescue MissingSourceFile
-  # Otherwise wrap the ActiveSupport JSON implementation for our simple use case
+# Use ActiveSupport's version of JSON if available
+if Object.const_defined?('ActiveSupport') && Kernel.const_get('ActiveSupport').const_defined?('JSON')
   class JSON
     def self.parse(i)
       ActiveSupport::JSON.decode(i)
     end
   end
+else
+  require 'json/add/rails'
 end
 
 class Contacts
